@@ -18,9 +18,9 @@ function App() {
 
       {/* Display UserProfile component */}
       <UserProfile 
-        name="Percival Shimange" 
-        age={22} 
-        bio="I love watching football and chilling indoors" 
+        name="Alice" 
+        age={25} 
+        bio="Loves hiking and photography" 
       />
 
       {/* Display Header, MainContent, and Footer */}
