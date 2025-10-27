@@ -2,6 +2,7 @@ import WelcomeMessage from './components/WelcomeMessage';
 import Header from './components/Header';
 import MainContent from './components/MainContent';
 import Footer from './components/Footer';
+import UserProfile from './components/UserProfile';
 import { useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
@@ -14,6 +15,13 @@ function App() {
     <>
       {/* Display the WelcomeMessage component */}
       <WelcomeMessage />
+
+      {/* Display UserProfile component */}
+      <UserProfile 
+        name="Percival Shimange" 
+        age={22} 
+        bio="I love watching football and chilling indoors" 
+      />
 
       {/* Display Header, MainContent, and Footer */}
       <Header />
@@ -48,3 +56,4 @@ function App() {
 }
 
 export default App;
+
