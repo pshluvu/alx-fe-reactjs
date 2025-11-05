@@ -1,9 +1,9 @@
 function MainContent() {
   return (
     <main style={{ padding: '20px', backgroundColor: '#eef', borderRadius: '8px', margin: '20px' }}>
-      <h2 style={{ color: '#333', textAlign: 'center' }}>Explore the World</h2>
+      <h2 style={{ color: '#333', textAlign: 'center' }}>My Favorite Cities</h2>
       <p style={{ lineHeight: '1.6', textAlign: 'justify' }}>
-        Discover amazing cities around the world known for their beauty, culture, and innovation.
+        I love to visit New York, Paris, and Tokyo.
       </p>
     </main>
   );
