@@ -3,21 +3,27 @@ import RecipeList from './components/RecipeList';
 import AddRecipeForm from './components/AddRecipeForm';
 import RecipeDetails from './components/RecipeDetails';
 import SearchBar from './components/SearchBar';
+import FavoritesList from './components/FavoritesList';
+import RecommendationsList from './components/RecommendationsList';
 
 function App() {
   return (
     <Router>
+      <div>
+        {/* Top section: Search and Add Recipe */}
+        <SearchBar />
+        <AddRecipeForm />
+
+        {/* Favorites and Recommendations */}
+        <FavoritesList />
+        <RecommendationsList />
+
+        {/* Main Recipe List */}
+        <RecipeList />
+      </div>
+
       <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <SearchBar />
-              <AddRecipeForm />
-              <RecipeList />
-            </>
-          }
-        />
+        {/* Recipe Details Route */}
         <Route path="/recipe/:id" element={<RecipeDetailsWrapper />} />
       </Routes>
     </Router>
@@ -32,4 +38,5 @@ const RecipeDetailsWrapper = () => {
 };
 
 export default App;
+
 
