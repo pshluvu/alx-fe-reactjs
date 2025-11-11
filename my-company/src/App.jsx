@@ -1,11 +1,10 @@
 import React from 'react';
-import RecipeList from './components/RecipeList';
 import AddRecipeForm from './components/AddRecipeForm';
-import './App.css';
+import RecipeList from './components/RecipeList';
 
 function App() {
   return (
-    <div className="App" style={{ padding: '20px' }}>
+    <div className="App">
       <h1>Recipe Sharing App</h1>
       <AddRecipeForm />
       <RecipeList />
