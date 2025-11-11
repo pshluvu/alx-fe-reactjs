@@ -1,29 +1,15 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import Home from './pages/Home';
-import About from './pages/About';
-import Services from './pages/Services';
-import Contact from './pages/Contact';
+import React from 'react';
+import RecipeList from './components/RecipeList';
+import AddRecipeForm from './components/AddRecipeForm';
 import './App.css';
 
 function App() {
   return (
-    <BrowserRouter>
-      {/* Navbar on all pages */}
-      <Navbar />
-
-      {/* Define Routes for all pages */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/contact" element={<Contact />} />
-      </Routes>
-
-      {/* Footer on all pages */}
-      <Footer />
-    </BrowserRouter>
+    <div className="App" style={{ padding: '20px' }}>
+      <h1>Recipe Sharing App</h1>
+      <AddRecipeForm />
+      <RecipeList />
+    </div>
   );
 }
 
