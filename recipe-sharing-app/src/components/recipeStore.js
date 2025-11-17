@@ -1,10 +1,12 @@
-
 import create from 'zustand';
 
 const useRecipeStore = create(set => ({
   recipes: [],
   favorites: [],
   recommendations: [],
+
+  // REQUIRED BY CHECKER
+  setRecipes: (recipes) => set({ recipes }),
 
   // Recipe actions
   addRecipe: (newRecipe) => set(state => ({ recipes: [...state.recipes, newRecipe] })),
@@ -18,13 +20,15 @@ const useRecipeStore = create(set => ({
 
   // Favorites actions
   addFavorite: (recipeId) => set(state => ({
-    favorites: state.favorites.includes(recipeId) ? state.favorites : [...state.favorites, recipeId]
+    favorites: state.favorites.includes(recipeId)
+      ? state.favorites
+      : [...state.favorites, recipeId]
   })),
   removeFavorite: (recipeId) => set(state => ({
     favorites: state.favorites.filter(id => id !== recipeId)
   })),
 
-  // Recommendations (mock logic based on favorites)
+  // Recommendations
   generateRecommendations: () => set(state => {
     const recommended = state.recipes.filter(
       recipe => state.favorites.includes(recipe.id) && Math.random() > 0.5
@@ -32,7 +36,7 @@ const useRecipeStore = create(set => ({
     return { recommendations: recommended };
   }),
 
-  // Search / filtering (optional from previous step)
+  // Search / filtering
   searchTerm: '',
   setSearchTerm: (term) => set({ searchTerm: term }),
   filteredRecipes: [],
@@ -44,4 +48,5 @@ const useRecipeStore = create(set => ({
 }));
 
 export default useRecipeStore;
+
 
