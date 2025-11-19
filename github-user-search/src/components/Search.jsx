@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { fetchUserData } from "../services/githubService";
+import axios from "axios";
 
 function Search() {
   const [username, setUsername] = useState("");
@@ -7,55 +7,63 @@ function Search() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-    if (!username) return;
-
     setLoading(true);
     setError("");
     setUser(null);
 
     try {
-      const data = await fetchUserData(username);
-      setUser(data);
+      const response = await axios.get(`https://api.github.com/users/${username}`);
+      setUser(response.data);
     } catch (err) {
-      setError("Looks like we can’t find the user");
+      setError("Looks like we cant find the user");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
+    <div className="w-full max-w-md">
+      {/* Search Form */}
+      <form onSubmit={handleSearch} className="flex mb-4">
         <input
           type="text"
-          placeholder="Enter GitHub username..."
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          style={{
-            padding: "10px",
-            width: "250px",
-            marginRight: "10px",
-          }}
+          placeholder="Enter GitHub username"
+          className="flex-grow p-2 border border-gray-300 rounded-l-md focus:outline-none"
         />
-        <button type="submit">Search</button>
+        <button
+          type="submit"
+          className="px-4 bg-blue-500 text-white rounded-r-md hover:bg-blue-600"
+        >
+          Search
+        </button>
       </form>
 
-      {loading && <p>Loading...</p>}
+      {/* Loading state */}
+      {loading && <p className="text-yellow-400 mb-2">Loading...</p>}
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {/* Error message */}
+      {error && <p className="text-red-500 mb-2">{error}</p>}
 
+      {/* User info */}
       {user && (
-        <div style={{ marginTop: "20px" }}>
+        <div className="bg-gray-800 p-4 rounded-md text-white">
           <img
             src={user.avatar_url}
-            alt="User avatar"
-            width="120"
-            style={{ borderRadius: "10px" }}
+            alt={user.login}
+            className="w-24 h-24 rounded-full mb-2"
           />
-          <h2>{user.name || user.login}</h2>
-          <a href={user.html_url} target="_blank">
+          <h2 className="text-xl font-bold">{user.name || user.login}</h2>
+          <p className="mb-2">{user.location}</p>
+          <a
+            href={user.html_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-400 hover:underline"
+          >
             View GitHub Profile
           </a>
         </div>
@@ -65,3 +73,4 @@ function Search() {
 }
 
 export default Search;
+
