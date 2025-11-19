@@ -3,19 +3,26 @@ import axios from "axios";
 
 function Search() {
   const [username, setUsername] = useState("");
-  const [user, setUser] = useState(null);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   // ✅ fetchUserData function
-  const fetchUserData = async (username) => {
+  const fetchUserData = async (query) => {
     setLoading(true);
     setError("");
-    setUser(null);
+    setUsers([]);
 
     try {
-      const response = await axios.get(`https://api.github.com/users/${username}`);
-      setUser(response.data);
+      const response = await axios.get(
+        `https://api.github.com/search/users?q=${query}`
+      );
+
+      if (response.data.items.length === 0) {
+        setError("Looks like we cant find the user");
+      } else {
+        setUsers(response.data.items);
+      }
     } catch (err) {
       setError("Looks like we cant find the user");
     } finally {
@@ -25,13 +32,15 @@ function Search() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    fetchUserData(username);
+    if (username.trim() !== "") {
+      fetchUserData(username);
+    }
   };
 
   return (
-    <div className="w-full max-w-md">
+    <div className="w-full max-w-xl mx-auto">
       {/* Search Form */}
-      <form onSubmit={handleSearch} className="flex mb-4">
+      <form onSubmit={handleSearch} className="flex mb-6">
         <input
           type="text"
           value={username}
@@ -48,34 +57,39 @@ function Search() {
       </form>
 
       {/* Loading state */}
-      {loading && <p className="text-yellow-400 mb-2">Loading...</p>}
+      {loading && <p className="text-yellow-400 mb-4">Loading...</p>}
 
       {/* Error message */}
-      {error && <p className="text-red-500 mb-2">{error}</p>}
+      {error && <p className="text-red-500 mb-4">{error}</p>}
 
-      {/* User info */}
-      {user && (
-        <div className="bg-gray-800 p-4 rounded-md text-white">
-          <img
-            src={user.avatar_url}
-            alt={user.login}
-            className="w-24 h-24 rounded-full mb-2"
-          />
-          <h2 className="text-xl font-bold">{user.name || user.login}</h2>
-          <p className="mb-2">{user.location}</p>
-          <a
-            href={user.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-400 hover:underline"
+      {/* Users list */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {users.map((user) => (
+          <div
+            key={user.id}
+            className="bg-gray-800 p-4 rounded-md flex flex-col items-center text-white"
           >
-            View GitHub Profile
-          </a>
-        </div>
-      )}
+            <img
+              src={user.avatar_url}
+              alt={user.login}
+              className="w-24 h-24 rounded-full mb-2"
+            />
+            <h2 className="text-lg font-bold">{user.login}</h2>
+            <a
+              href={user.html_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:underline mt-1"
+            >
+              View Profile
+            </a>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
 export default Search;
+
 
