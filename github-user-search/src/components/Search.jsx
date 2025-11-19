@@ -7,8 +7,8 @@ function Search() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
+  // ✅ fetchUserData function
+  const fetchUserData = async (username) => {
     setLoading(true);
     setError("");
     setUser(null);
@@ -21,6 +21,11 @@ function Search() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    fetchUserData(username);
   };
 
   return (
