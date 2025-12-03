@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 function AddRecipeForm() {
   const [title, setTitle] = useState("");
   const [ingredients, setIngredients] = useState("");
-  const [instructions, setInstructions] = useState("");
+  const [steps, setSteps] = useState(""); // ✅ renamed
   const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // ✅ VALIDATION
-    if (!title || !ingredients || !instructions) {
+    // Validation
+    if (!title || !ingredients || !steps) {
       setError("All fields are required.");
       return;
     }
@@ -23,21 +23,20 @@ function AddRecipeForm() {
       return;
     }
 
-    // ✅ If validation passes
-    setError("");
-
+    // ✅ Prepare recipe object
     const newRecipe = {
       title,
       ingredients: ingredientList,
-      instructions: instructions.split("\n"),
+      steps: steps.split("\n"), // ✅ renamed
     };
 
     console.log("New Recipe Submitted:", newRecipe);
 
-    // ✅ Clear the form after submit
+    // Clear form
     setTitle("");
     setIngredients("");
-    setInstructions("");
+    setSteps(""); // ✅ renamed
+    setError("");
 
     alert("Recipe submitted successfully! (Check console)");
   };
@@ -49,22 +48,16 @@ function AddRecipeForm() {
           ← Back to Home
         </Link>
 
-        <h1 className="text-3xl font-bold mb-6 text-center">
-          Add New Recipe
-        </h1>
+        <h1 className="text-3xl font-bold mb-6 text-center">Add New Recipe</h1>
 
         {error && (
-          <p className="bg-red-100 text-red-700 p-3 mb-4 rounded">
-            {error}
-          </p>
+          <p className="bg-red-100 text-red-700 p-3 mb-4 rounded">{error}</p>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* TITLE */}
           <div>
-            <label className="block font-semibold mb-1">
-              Recipe Title
-            </label>
+            <label className="block font-semibold mb-1">Recipe Title</label>
             <input
               type="text"
               className="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -87,15 +80,15 @@ function AddRecipeForm() {
             ></textarea>
           </div>
 
-          {/* INSTRUCTIONS */}
+          {/* STEPS */}
           <div>
             <label className="block font-semibold mb-1">
               Preparation Steps (one per line)
             </label>
             <textarea
               className="w-full border rounded p-2 h-28 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              value={instructions}
-              onChange={(e) => setInstructions(e.target.value)}
+              value={steps} // ✅ renamed
+              onChange={(e) => setSteps(e.target.value)} // ✅ renamed
               placeholder="Step 1: ...&#10;Step 2: ..."
             ></textarea>
           </div>
@@ -114,3 +107,4 @@ function AddRecipeForm() {
 }
 
 export default AddRecipeForm;
+
