@@ -5,9 +5,9 @@ function AddRecipeForm() {
   const [title, setTitle] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [steps, setSteps] = useState("");
-  const [errors, setErrors] = useState({}); // ✅ errors object
+  const [errors, setErrors] = useState({});
 
-  // ✅ Validation function
+  // Validation function
   const validate = () => {
     const newErrors = {};
 
@@ -25,11 +25,10 @@ function AddRecipeForm() {
     e.preventDefault();
 
     const validationErrors = validate();
-    setErrors(validationErrors); // ✅ setErrors called
+    setErrors(validationErrors);
 
-    if (Object.keys(validationErrors).length > 0) return; // stop submit if errors
+    if (Object.keys(validationErrors).length > 0) return;
 
-    // Prepare new recipe object
     const newRecipe = {
       title,
       ingredients: ingredients.split(",").map((i) => i.trim()),
@@ -47,8 +46,8 @@ function AddRecipeForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6">
+    <div className="min-h-screen bg-gray-100 p-4 md:p-6">
+      <div className="max-w-md md:max-w-xl mx-auto bg-white rounded-lg shadow-lg p-6 md:p-8">
         <Link to="/" className="text-blue-600 font-semibold mb-4 inline-block">
           ← Back to Home
         </Link>
@@ -61,7 +60,7 @@ function AddRecipeForm() {
             <label className="block font-semibold mb-1">Recipe Title</label>
             <input
               type="text"
-              className={`w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 ${
+              className={`w-full border rounded p-2 md:p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 ${
                 errors.title ? "border-red-500" : ""
               }`}
               value={title}
@@ -79,7 +78,7 @@ function AddRecipeForm() {
               Ingredients (comma-separated)
             </label>
             <textarea
-              className={`w-full border rounded p-2 h-24 focus:outline-none focus:ring-2 focus:ring-blue-400 ${
+              className={`w-full border rounded p-2 md:p-3 h-24 md:h-32 focus:outline-none focus:ring-2 focus:ring-blue-400 ${
                 errors.ingredients ? "border-red-500" : ""
               }`}
               value={ingredients}
@@ -97,7 +96,7 @@ function AddRecipeForm() {
               Preparation Steps (one per line)
             </label>
             <textarea
-              className={`w-full border rounded p-2 h-28 focus:outline-none focus:ring-2 focus:ring-blue-400 ${
+              className={`w-full border rounded p-2 md:p-3 h-28 md:h-36 focus:outline-none focus:ring-2 focus:ring-blue-400 ${
                 errors.steps ? "border-red-500" : ""
               }`}
               value={steps}
@@ -123,5 +122,6 @@ function AddRecipeForm() {
 }
 
 export default AddRecipeForm;
+
 
 
