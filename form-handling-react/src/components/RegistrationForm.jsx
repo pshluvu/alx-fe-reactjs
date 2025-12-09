@@ -1,104 +1,60 @@
 import { useState } from "react";
 
 function RegistrationForm() {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [errors, setErrors] = useState({});
-  const [success, setSuccess] = useState("");
-
-  // Handle input change
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  // Basic validation
-  const validate = () => {
-    let newErrors = {};
-
-    if (!formData.username) newErrors.username = "Username is required";
-    if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.password) newErrors.password = "Password is required";
-
-    return newErrors;
-  };
-
-  // Handle submit
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setSuccess("");
 
-    const validationErrors = validate();
-    setErrors(validationErrors);
-
-    if (Object.keys(validationErrors).length === 0) {
-      try {
-        const response = await fetch("https://jsonplaceholder.typicode.com/users", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
-
-        if (response.ok) {
-          setSuccess("User registered successfully!");
-          setFormData({ username: "", email: "", password: "" });
-        }
-      } catch (error) {
-        console.error("Error:", error);
-      }
+    // Basic validation
+    if (!username || !email || !password) {
+      alert("All fields are required!");
+      return;
     }
+
+    console.log("Submitted:", { username, email, password });
+    alert("Registration successful!");
+
+    // Reset form
+    setUsername("");
+    setEmail("");
+    setPassword("");
   };
 
   return (
-    <div>
-      <h2>Registration Form (Controlled)</h2>
-
-      <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>Username:</label>
         <input
           type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
-          onChange={handleChange}
+          value={username}             // ✅ Controlled input
+          onChange={(e) => setUsername(e.target.value)}
         />
-        <p>{errors.username}</p>
+      </div>
 
+      <div>
+        <label>Email:</label>
         <input
           type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
+          value={email}                // ✅ Controlled input
+          onChange={(e) => setEmail(e.target.value)}
         />
-        <p>{errors.email}</p>
+      </div>
 
+      <div>
+        <label>Password:</label>
         <input
           type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
+          value={password}             // ✅ Controlled input
+          onChange={(e) => setPassword(e.target.value)}
         />
-        <p>{errors.password}</p>
+      </div>
 
-        <button type="submit">Register</button>
-      </form>
-
-      {success && <p>{success}</p>}
-    </div>
+      <button type="submit">Register</button>
+    </form>
   );
 }
 
 export default RegistrationForm;
-
-
-
-
