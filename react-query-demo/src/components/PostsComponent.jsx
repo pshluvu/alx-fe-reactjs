@@ -10,11 +10,12 @@ function PostsComponent() {
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
-    
-    // ✅ Advanced options required by ALX
-    refetchOnWindowFocus: false,    // do not refetch automatically when window gains focus
-    keepPreviousData: true,         // keep old data while fetching new data
-    staleTime: 10000,               // optional, keep data fresh for 10 seconds
+
+    // ✅ Advanced React Query options
+    refetchOnWindowFocus: false,
+    keepPreviousData: true,
+    cacheTime: 1000 * 60 * 5, // ✅ cache for 5 minutes
+    staleTime: 10000,          // optional: data fresh for 10 seconds
   });
 
   if (isLoading) return <p>Loading posts...</p>;
@@ -34,4 +35,3 @@ function PostsComponent() {
 }
 
 export default PostsComponent;
-
