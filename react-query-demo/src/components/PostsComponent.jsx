@@ -1,48 +1,31 @@
 import { useQuery } from "@tanstack/react-query";
 
 const fetchPosts = async () => {
-  const response = await fetch("https://jsonplaceholder.typicode.com/posts");
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch posts");
-  }
-
-  return response.json();
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+  if (!res.ok) throw new Error("Failed to fetch posts");
+  return res.json();
 };
 
 function PostsComponent() {
-  const {
-    data: posts,
-    isLoading,
-    isError,
-    error,
-    refetch,
-  } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
-    staleTime: 10000,
-    cacheTime: 1000 * 60 * 5,
+    
+    // ✅ Advanced options required by ALX
+    refetchOnWindowFocus: false,    // do not refetch automatically when window gains focus
+    keepPreviousData: true,         // keep old data while fetching new data
+    staleTime: 10000,               // optional, keep data fresh for 10 seconds
   });
 
-  if (isLoading) return <h2>Loading posts...</h2>;
-  if (isError) return <h2>Error: {error.message}</h2>;
+  if (isLoading) return <p>Loading posts...</p>;
+  if (isError) return <p>Error: {error.message}</p>;
 
   return (
     <div>
-      <h2>Posts from JSONPlaceholder</h2>
-
-      <button onClick={refetch}>🔄 Refetch Posts</button>
-
-      {posts.slice(0, 10).map((post) => (
-        <div
-          key={post.id}
-          style={{
-            border: "1px solid #ccc",
-            padding: "10px",
-            margin: "10px 0",
-          }}
-        >
-          <h4>{post.title}</h4>
+      <button onClick={() => refetch()}>Refetch Posts</button>
+      {data.slice(0, 10).map((post) => (
+        <div key={post.id} style={{ marginBottom: "1rem" }}>
+          <h3>{post.title}</h3>
           <p>{post.body}</p>
         </div>
       ))}
@@ -51,3 +34,4 @@ function PostsComponent() {
 }
 
 export default PostsComponent;
+
