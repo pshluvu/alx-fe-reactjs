@@ -1,16 +1,16 @@
 import { Navigate } from "react-router-dom";
-
-// ✅ Simulated authentication
-const isAuthenticated = () => {
-  return localStorage.getItem("auth") === "true";
-};
+import { useAuth } from "../hooks/useAuth"; // ✅ Import useAuth
 
 function ProtectedRoute({ children }) {
-  if (!isAuthenticated()) {
-    return <Navigate to="/login" />;
+  const user = useAuth(); // ✅ Use the hook to get auth status
+
+  if (!user.isLoggedIn) {
+    // Redirect unauthenticated users
+    return <Navigate to="/" replace />;
   }
 
   return children;
 }
 
 export default ProtectedRoute;
+
