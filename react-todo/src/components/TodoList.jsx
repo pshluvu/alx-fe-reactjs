@@ -1,45 +1,44 @@
 import { useState } from "react";
 import AddTodoForm from "./AddTodoForm";
+import "./TodoList.css"; // Optional: For .completed styling
 
-export default function TodoList() {
+function TodoList() {
   const [todos, setTodos] = useState([
-    { id: 1, text: "Learn React", completed: false },
-    { id: 2, text: "Build Todo App", completed: false },
+    { text: "Learn React", completed: false },
+    { text: "Build Todo App", completed: false },
   ]);
 
   const addTodo = (text) => {
-    const newTodo = { id: Date.now(), text, completed: false };
-    setTodos([...todos, newTodo]);
+    setTodos([...todos, { text, completed: false }]);
   };
 
-  const toggleTodo = (id) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
+  const toggleTodo = (index) => {
+    const newTodos = [...todos];
+    newTodos[index].completed = !newTodos[index].completed;
+    setTodos(newTodos);
   };
 
-  const deleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+  const deleteTodo = (index) => {
+    const newTodos = todos.filter((_, i) => i !== index);
+    setTodos(newTodos);
   };
 
   return (
     <div>
       <h1>Todo List</h1>
-      <AddTodoForm onAdd={addTodo} />
+      <AddTodoForm addTodo={addTodo} />
       <ul>
-        {todos.map((todo) => (
+        {todos.map((todo, index) => (
           <li
-            key={todo.id}
-            onClick={() => toggleTodo(todo.id)}
-            style={{
-              textDecoration: todo.completed ? "line-through" : "none",
-              cursor: "pointer",
-            }}
+            key={index}
+            onClick={() => toggleTodo(index)}
+            className={todo.completed ? "completed" : ""}
           >
-            {todo.text}
-            <button onClick={(e) => { e.stopPropagation(); deleteTodo(todo.id); }}>
+            {todo.text}{" "}
+            <button data-testid={`delete-${index}`} onClick={(e) => {
+              e.stopPropagation(); // Prevent toggling when clicking delete
+              deleteTodo(index);
+            }}>
               Delete
             </button>
           </li>
@@ -48,3 +47,6 @@ export default function TodoList() {
     </div>
   );
 }
+
+export default TodoList;
+
